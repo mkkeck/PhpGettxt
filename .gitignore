@@ -1,0 +1,8 @@
+.idea
+.phpunit*
+_src
+_backup
+vendor
+tests/logs
+*.phar
+*.lock

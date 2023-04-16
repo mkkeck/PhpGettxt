@@ -1,0 +1,24 @@
+{
+  "name": "mkkeck/phpgettxt",
+  "description": "Simple and dependency free translation API for PHP using GNU Gettext MO-files",
+  "keywords": ["gettxt", "gettext", "mo", "translator", "translation", "i18n", "l10n"],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Keck",
+      "email": "git@michaelkeck.de"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/mkkeck/PhpGettxt/issues",
+    "source": "https://github.com/mkkeck/PhpGettxt"
+  },
+  "require": {
+    "php": "^7.4 || ^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.4 || ^8 || ^9"
+  }
+
+}
