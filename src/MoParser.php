@@ -74,6 +74,7 @@ class MoParser {
    * Reads and caches contents from a MO-file.
    *
    * @param  TranslationCache  $translations  Cached translations
+   * @throws Exception  If filename was defined but could not be read.
    */
   public function getContents($translations) {
     if (is_null($this->filename)) {
@@ -85,14 +86,14 @@ class MoParser {
     ]);
     if (!file_exists($this->filename)) {
       $this->error = sprintf('File "%s" does not exists', $fileinfo);
-      return;
+      throw new Exception($this->error);
     }
     if (!is_readable($this->filename)) {
       $this->error = sprintf('File "%s" could not be read, probably wrong permissions.', $fileinfo);
-      return;
+      throw new Exception($this->error);
     }
-    $stream = new MoReader($this->filename);
     try {
+      $stream = new MoReader($this->filename);
       $magic = $stream->read(0, 4);
       if (strcmp($magic, self::MAGIC_LE) === 0) {
         $unpack = 'V';
