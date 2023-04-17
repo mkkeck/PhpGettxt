@@ -71,7 +71,7 @@ $translation = new Translation($cache);
 // ...
 
 // Get instance
-$translator = Translator::getInstance();
+use PhpGettxt\Translation;$translator = Translator::getInstance();
 
 // Set locale
 $locale = $translator->setLocale('de_DE');
@@ -95,7 +95,7 @@ $var_name = $translator->getVarname();
 
 
 // Detects configured locale. It checks:
-// - global locale variable: `$GLOBALS['locale']'`
+// - global locale variable: $GLOBALS['locale']
 // - environment for `LC_ALL`, `LC_MESSAGES` and `LANG`
 $detected_locale = $translator->detectLocale();
 // returns the locale name if defined (e.g. 'de_DE'), otherwise 'en'.
@@ -103,6 +103,9 @@ $detected_locale = $translator->detectLocale();
 $browser_locale = $translator->getAcceptLocale();
 // returns the most preferred accepted locale from browser,
 // e.g. 'de_DE', or null if none found
+
+// Sets the default directory where to find translation files.
+$locale_dir = $translator->setLocaleDir(__DIR__ . '/locales/');
 
 // Sets domain to library default
 $translator->setTextdomain();
@@ -132,7 +135,9 @@ $domain = $translator->textdomain();
 // Sets the path where to find translation files for
 // the 'default' domain. The files have to be named
 // like 'de.mo', ''de_DE.mo', 'de_AT.mo'.
-$translator->bindTextdomain('', __DIR__ . '/locales/');
+$translator->bindTextdomain();
+// or:
+// $translator->bindTextdomain(Translator::DEFAULT_DOMAIN, $locale_dir);
 
 // Binding another domain
 // On binding another domain, e.g. 'myapp', then the files have to
@@ -159,11 +164,11 @@ Translate a string
 // Translate 'Hello World'
 echo $translation->gettxt('Hello World');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf($translation->gettxt('Hello %s'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf($translation->gettxt('Hello %s'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo $translation->gettxt(['Hello %s', 'Jon']);
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo $translation->gettxt(['Hello %s', 'John']);
 ```
 
 Translate a string with context
@@ -173,11 +178,11 @@ Translate a string with context
 // Translate 'Hello World'
 echo $translation->pgettxt('Context', 'Hello World');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf($translation->pgettxt('Context', 'Hello %s'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf($translation->pgettxt('Context', 'Hello %s'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo $translation->pgettxt('Context', ['Hello %s', 'Jon']);
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo $translation->pgettxt('Context', ['Hello %s', 'John']);
 ```
 
 Return a string marked for translation
@@ -187,11 +192,11 @@ Return a string marked for translation
 // Returns 'Hello World'
 echo $translation->noop_gettxt('Hello World');
 
-// Method 1: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf($translation->noop_gettxt('Hello %s'), 'Jon');
+// Method 1: Returns 'Hello %s' and replace '%s' with 'John'
+echo sprintf($translation->noop_gettxt('Hello %s'), 'John');
 
-// Method 2: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo $translation->noop_gettxt(['Hello %s', 'Jon']);
+// Method 2: Returns 'Hello %s' and replace '%s' with 'John'
+echo $translation->noop_gettxt(['Hello %s', 'John']);
 ```
 
 Translate a plural form
@@ -254,11 +259,11 @@ _setlocale(0, 'de');
 // or: set_locale('de');
 
 // Configure default text domain
-_textdomain('');
+_textdomain(Translator::DEFAULT_DOMAIN);
 // or: set_textdomain();
 
-_bindtextdomain('', __DIR__ . '/locales/');
-// or: load_textdomain('',  __DIR__ . '/locales/');
+_bindtextdomain(Translator::DEFAULT_DOMAIN, __DIR__ . '/locales/');
+// or: load_textdomain(Translator::DEFAULT_DOMAIN,  __DIR__ . '/locales/');
 
 // Gettext compatibility only, does nothing
 //_bind_textdomain_codeset('', 'UTF-8');
@@ -271,11 +276,11 @@ Translate a string
 // Translate 'Hello World'
 echo gettxt('Hello World');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(gettxt('Hello %s'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(gettxt('Hello %s'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo gettxt(['Hello %s', 'Jon']);
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo gettxt(['Hello %s', 'John']);
 ```
 
 Translate a string with context
@@ -285,11 +290,11 @@ Translate a string with context
 // Translate 'Hello World'
 echo pgettxt('Context', 'Hello World');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(pgettxt('Context', 'Hello %s'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(pgettxt('Context', 'Hello %s'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo pgettxt('Context', ['Hello %s', 'Jon']);
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo pgettxt('Context', ['Hello %s', 'John']);
 ```
 
 Return a string marked for translation
@@ -299,11 +304,11 @@ Return a string marked for translation
 // Returns 'Hello World'
 echo noop_gettxt('Hello World');
 
-// Method 1: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(noop_gettxt('Hello %s'), 'Jon');
+// Method 1: Returns 'Hello %s' and replace '%s' with 'John'
+echo sprintf(noop_gettxt('Hello %s'), 'John');
 
-// Method 2: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo noop_gettxt(['Hello %s', 'Jon']);
+// Method 2: Returns 'Hello %s' and replace '%s' with 'John'
+echo noop_gettxt(['Hello %s', 'John']);
 ```
 
 Translate a plural form
@@ -387,8 +392,13 @@ _setlocale(0, 'de');
 // or: set_locale('de')
 
 // Configure default text domain
-set_textdomain('');
-load_textdomain('', __DIR__ . '/locales/');
+set_textdomain(Translator::DEFAULT_DOMAIN);
+load_textdomain(Translator::DEFAULT_DOMAIN, __DIR__ . '/locales/');
+
+// Or alternate
+set_locale_dir( __DIR__ . '/locales/');
+set_textdomain(Translator::DEFAULT_DOMAIN);
+load_textdomain(Translator::DEFAULT_DOMAIN);
 
 // Gettext compatibility only, does nothing
 //_bind_textdomain_codeset('', 'UTF-8');
@@ -401,11 +411,11 @@ Translate a string
 // Translate 'Hello World'
 echo __('Hello World');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(__('Hello %s'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(__('Hello %s'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo __(['Hello %s', 'Jon']);
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo __(['Hello %s', 'John']);
 ```
 
 Translate a string from another domain
@@ -415,11 +425,11 @@ Translate a string from another domain
 // Translate 'Hello World'
 echo __('Hello World', 'domain');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(__('Hello %s', 'domain'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(__('Hello %s', 'domain'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo __(['Hello %s', 'Jon'], 'domain');
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo __(['Hello %s', 'John'], 'domain');
 ```
 
 Translate a string with context
@@ -429,11 +439,11 @@ Translate a string with context
 // Translate 'Hello World'
 echo _x('Hello World', 'context');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(_x('Hello %s', 'context'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(_x('Hello %s', 'context'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo _x(['Hello %s', 'Jon'], 'context');
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo _x(['Hello %s', 'John'], 'context');
 ```
 
 Translate a string with context from another domain
@@ -443,11 +453,11 @@ Translate a string with context from another domain
 // Translate 'Hello World'
 echo _x('Hello World', 'context', 'domain');
 
-// Method 1: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(_x('Hello %s', 'context', 'domain'), 'Jon');
+// Method 1: Translate 'Hello %s' and replace '%s' with 'John'
+echo sprintf(_x('Hello %s', 'context', 'domain'), 'John');
 
-// Method 2: Translate 'Hello %s' and replace '%s' with 'Jon'
-echo _x(['Hello %s', 'Jon'], 'context', 'domain');
+// Method 2: Translate 'Hello %s' and replace '%s' with 'John'
+echo _x(['Hello %s', 'John'], 'context', 'domain');
 ```
 
 Return a string marked for translation
@@ -457,11 +467,11 @@ Return a string marked for translation
 // Returns 'Hello World'
 echo noop__('Hello World');
 
-// Method 1: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(noop__('Hello %s'), 'Jon');
+// Method 1: Returns 'Hello %s' and replace '%s' with 'John'
+echo sprintf(noop__('Hello %s'), 'John');
 
-// Method 2: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo noop__(['Hello %s', 'Jon']);
+// Method 2: Returns 'Hello %s' and replace '%s' with 'John'
+echo noop__(['Hello %s', 'John']);
 ```
 
 Return a string marked for translation from another domain
@@ -471,11 +481,11 @@ Return a string marked for translation from another domain
 // Returns 'Hello World'
 echo noop__('Hello World', 'domain');
 
-// Method 1: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo sprintf(noop__('Hello %s', 'domain'), 'Jon');
+// Method 1: Returns 'Hello %s' and replace '%s' with 'John'
+echo sprintf(noop__('Hello %s', 'domain'), 'John');
 
-// Method 2: Returns 'Hello %s' and replace '%s' with 'Jon'
-echo noop__(['Hello %s', 'Jon'], 'domain');
+// Method 2: Returns 'Hello %s' and replace '%s' with 'John'
+echo noop__(['Hello %s', 'John'], 'domain');
 ```
 
 Translate a plural form
