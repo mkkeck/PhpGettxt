@@ -72,7 +72,7 @@ class MoReader {
   public function read($pos, $bytes) {
     $limit = $pos + $bytes;
     if ($limit > $this->length) {
-      $this->error = __METHOD__ . ': Not enough bytes!';
+      $this->error = 'Not enough bytes!';
       throw new Exception($this->error);
     }
     $data = substr($this->string, $pos, $bytes);
@@ -122,6 +122,7 @@ class MoReader {
    * Constructor.
    *
    * @param  string  $filename  The name of the file to read.
+   * @throws Exception If file does not exists or could not be read.
    */
   public function __construct($filename) {
     $this->string = '';
@@ -131,13 +132,13 @@ class MoReader {
       basename($filename)
     ]);
     if (!file_exists($filename)) {
-      $this->error = __CLASS__ . ': ' . sprintf('File "%s" does not exists', $fileinfo);
-      return;
+      $this->error = sprintf('File "%s" does not exists', $fileinfo);
+      throw new Exception($this->error);
     }
     $contents = file_get_contents($filename);
     if ($contents === false) {
-      $this->error = __CLASS__ . ': ' . sprintf('File "%s" could not be read, probably wrong permissions.', $fileinfo);
-      return;
+      $this->error = sprintf('File "%s" could not be read, probably wrong permissions.', $fileinfo);
+      throw new Exception($this->error);
     }
     $this->length = strlen($contents);
     $this->string = $contents;
