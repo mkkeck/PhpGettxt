@@ -8,14 +8,9 @@ class PluralFormTest extends TestCase {
 
   /**
    * Add PhpGettxt autoloader.
-   *
-   * @param $name
-   * @param $data
-   * @param $dataName
    */
-  public function __construct($name = null, $data = [], $dataName = '') {
+  protected function setUp(): void {
     include_once dirname(__DIR__). '/autoload.php';
-    parent::__construct($name, $data, $dataName);
   }
 
   /**

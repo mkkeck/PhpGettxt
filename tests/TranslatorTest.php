@@ -8,13 +8,10 @@ class TranslatorTest extends TestCase {
   /**
    * Add PhpGettxt autoloader.
    *
-   * @param $name
-   * @param $data
-   * @param $dataName
+   * @return void
    */
-  public function __construct($name = null, $data = [], $dataName = '') {
+  protected function setUp(): void {
     include_once dirname(__DIR__). '/autoload.php';
-    parent::__construct($name, $data, $dataName);
   }
 
 
@@ -123,7 +120,6 @@ class TranslatorTest extends TestCase {
     $translator = Translator::getInstance();
     $translation = $translator->getTranslation();
     $this->assertEquals('Typ', $translation->gettxt('Type'));
-
 
     $translator = Translator::getInstance();
     $translator->setLocale('be');
@@ -243,6 +239,17 @@ class TranslatorTest extends TestCase {
     $name = 'locale';
     $this->assertEquals(
       $name, $translator->setVarname($name)
+    );
+  }
+
+  public function testLocaleDir() {
+    $dir = rtrim(str_replace('\\', '/', __DIR__ . '/data/locale/'), '/');
+    $res = Translator::getInstance()->setLocaleDir($dir);
+    $this->assertEquals(
+      $dir, $res
+    );
+    $this->assertEquals(
+      $dir, Translator::getInstance()->getLocaleDir()
     );
   }
 

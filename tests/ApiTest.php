@@ -5,23 +5,21 @@ use PHPUnit\Framework\TestCase;
 
 class ApiTest extends TestCase {
 
+  protected $locale_dir;
+
   /**
    * Add PhpGettxt autoloader.
    *
-   * @param $name
-   * @param $data
-   * @param $dataName
+   * @throws Exception
    */
-  public function __construct($name = null, $data = [], $dataName = '') {
-    include_once dirname(__DIR__) . '/autoload.php';
-    parent::__construct($name, $data, $dataName);
-  }
-
   protected function setUp(): void {
+    include_once dirname(__DIR__) . '/autoload.php';
     Translator::loadApi();
+    $this->locale_dir = rtrim(str_replace('\\', '/', __DIR__ .'/data/locale/'), '/');
+    set_locale_dir($this->locale_dir);
     _setlocale(0, 'cs');
-    _textdomain('pma');
-    _bindtextdomain('pma', __DIR__ .'/data/locale');
+    //_textdomain('pma');
+    _bindtextdomain('pma');
     _bind_textdomain_codeset('pma', 'UTF-8');
   }
 
@@ -50,6 +48,12 @@ class ApiTest extends TestCase {
     );
   }
 
+
+  /**
+   * Test plurals
+   *
+   * @return void
+   */
   public function testNgettxt() {
     $this->assertEquals(
       '%d sekundy',
@@ -70,6 +74,11 @@ class ApiTest extends TestCase {
   }
 
 
+  /**
+   * Test translations from another domain
+   *
+   * @return void
+   */
   public function testDgettxt() {
     $this->assertEquals(
       'Typ',
@@ -115,13 +124,12 @@ class ApiTest extends TestCase {
 
 
   public function testSetup() {
-    $this->assertEquals(
-      'cs',
-      _setlocale(0)
-    );
-    $this->assertEquals(
-      'pma',
-      _textdomain(null)
-    );
+    $this->assertEquals('cs', _setlocale(0));
+    $this->assertEquals('pma', _textdomain(null));
+    $this->assertEquals('pma', get_textdomain());
+    $this->assertEquals($this->locale_dir, get_locale_dir());
+
+    $this->expectException(Exception::class);
+    set_locale_dir(__DIR__ . '/foo');
   }
 }
