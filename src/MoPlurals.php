@@ -233,7 +233,7 @@ class MoPlurals {
               break;
             }
             if (!$found) {
-              throw new Exception(__METHOD__ . ': Mismatched parentheses');
+              throw new Exception('Mismatched parentheses');
             }
             $pos++;
             break;
@@ -286,7 +286,7 @@ class MoPlurals {
             }
 
             if (!$found) {
-              throw new Exception(__METHOD__ . ': Missing starting "?" ternary operator');
+              throw new Exception('Missing starting "?" ternary operator');
             }
             $pos++;
             break;
@@ -299,7 +299,7 @@ class MoPlurals {
               $pos     += $span;
               break;
             }
-            throw new Exception(sprintf(__METHOD__ . ': Unknown symbol "%s"', $next));
+            throw new Exception(sprintf('Unknown symbol "%s"', $next));
         }
       }
       while (!empty($stack)) {
