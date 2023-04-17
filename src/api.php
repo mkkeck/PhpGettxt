@@ -72,7 +72,7 @@ function _setlocale($category, $locale = null) {
  *                               file.
  * @return string|false The direcotry, or <var>false</var> on failure
  */
-function _bindtextdomain($domain, $dir) {
+function _bindtextdomain($domain = Translator::DEFAULT_DOMAIN, $dir = null) {
   return translator()->bindTextdomain($domain, $dir);
 }
 
@@ -230,7 +230,7 @@ function dnpgettxt($domain, $msgctxt, $singular, $plural, $count) {
  *         following elements are the placeholders.
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  *
  * @return string  The translated string
@@ -260,7 +260,7 @@ function __($msgid, $domain = null) {
  *         Context of the string
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  *
  * @return string  The translated string
@@ -295,7 +295,7 @@ function _x($msgid, $msgctxt, $domain = null) {
  *         following elements are the placeholders.
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  *
  * @return string  The translated singular/plural form
@@ -334,12 +334,10 @@ function _n($singular, $plural, $count, $domain = null) {
  *         Context of the string
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  *
  * @return string  The translated singular/plural form
- *
- * @see    {@link BaseTranslator::DEFAULT_DOMAIN DEFAULT_DOMAIN}
  */
 function _nx($singular, $plural, $count, $msgctxt, $domain = null) {
   return translator()->getTranslation($domain)->npgettxt($msgctxt, $singular, $plural, $count);
@@ -364,7 +362,7 @@ function _nx($singular, $plural, $count, $msgctxt, $domain = null) {
  *         following elements are the placeholders.
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  * @return string  The original string
  */
@@ -411,7 +409,7 @@ function noop__($msgid, $domain = null) {
  *         following elements are the placeholders.
  * @param  string  $domain
  *         The unique identifier for the translation.
- *         If <b>$domain</b> empty Translation::DEFAULT_DOMAIN
+ *         If <b>$domain</b> empty the current domain
  *         is used.
  * @return string  The plural or singular form
  */
@@ -461,100 +459,138 @@ function get_translator_varname() {
 }
 
 
-/**
- * Alias for {@link _bindtextdomain()}.
- *
- * @param  string       $domain
- * @param  string|null  $dir
- * @return string|false
- */
-function load_textdomain($domain, $dir) {
-  return translator()->bindTextdomain($domain, $dir);
+if (!function_exists('load_textdomain')) {
+  /**
+   * Alias for {@link _bindtextdomain()}.
+   *
+   * @param  string       $domain
+   * @param  string|null  $dir
+   * @return string|false
+   */
+  function load_textdomain($domain = Translator::DEFAULT_DOMAIN, $dir = null) {
+    return translator()->bindTextdomain($domain, $dir);
+  }
 }
 
 
-/**
- * Alias for {@link _textdomain()}.
- *
- * @param  string       $domain  The unique identifier for the translation
- * @return string|null  The new domain or null if was not changed
- *
- * @see    _textdomain(), get_textdomain()
- */
-function set_textdomain($domain) {
-  return translator()->setTextdomain($domain);
+if (!function_exists('set_textdomain')) {
+  /**
+   * Alias for {@link _textdomain()}.
+   *
+   * @param  string       $domain  The unique identifier for the translation
+   * @return string|null  The new domain or null if was not changed
+   *
+   * @see    _textdomain(), get_textdomain()
+   */
+  function set_textdomain($domain) {
+    return translator()->setTextdomain($domain);
+  }
 }
 
 
-/**
- * Returns current used text-domain.
- *
- * @return string  The text-domain. Returns 'default' if
- *                 no text-domain was set.
- *
- * @see    _textdomain()
- */
-function get_textdomain() {
-  return translator()->getTextdomain();
+if (!function_exists('get_textdomain')) {
+  /**
+   * Returns current used text-domain.
+   *
+   * @return string  The text-domain. Returns 'default' if
+   *                 no text-domain was set.
+   *
+   * @see    _textdomain()
+   */
+  function get_textdomain() {
+    return translator()->getTextdomain();
+  }
 }
 
 
-/**
- * Detects configured locale.
- *
- * It checks:
- * - global locale variable: $GLOBALS['locale']'
- * - environment for LC_ALL, LC_MESSAGES and LAN
- *
- * @return string  With locale name. If it could not detect
- *                 <b>'en'</b> is used as fallback.
- *
- * @see    _setlocale(), get_accepted_locale(), get_locale(), set_locale()
- */
 if (!function_exists('detect_locale')) {
+  /**
+   * Detects configured locale.
+   *
+   * It checks:
+   * - global locale variable: $GLOBALS['locale']'
+   * - environment for LC_ALL, LC_MESSAGES and LAN
+   *
+   * @return string  With locale name. If it could not detect
+   *                 <b>'en'</b> is used as fallback.
+   *
+   * @see    _setlocale(), get_accepted_locale(), get_locale(), set_locale()
+   */
   function detect_locale() {
     return translator()->detectLocale();
   }
 }
 
 
-/**
- * Alias for {@link _setlocale()} but accepts only parameter `$locale`.
- *
- * @param  string|null  $locale  Locale name
- * @return string       The defined locale name
- * @see    _setlocale(), detect_locale(), get_accepted_locale(), get_locale()
- */
 if (!function_exists('set_locale')) {
+  /**
+   * Alias for {@link _setlocale()} but accepts only parameter `$locale`.
+   *
+   * @param  string|null  $locale  Locale name
+   * @return string       The defined locale name
+   * @see    _setlocale(), detect_locale(), get_accepted_locale(), get_locale()
+   */
   function set_locale($locale = null) {
     return translator()->setLocale($locale);
   }
 }
 
-/**
- * Returns current used locale
- *
- * @return string  The current used locale, e.g. 'en_US'.
- *
- * @see    _setlocale(), detect_locale(), get_accepted_locale(), set_locale()
- */
+
 if (!function_exists('get_locale')) {
+  /**
+   * Returns current used locale
+   *
+   * @return string  The current used locale, e.g. 'en_US'.
+   *
+   * @see    _setlocale(), detect_locale(), get_accepted_locale(), set_locale()
+   */
   function get_locale() {
     return translator()->getLocale();
   }
 }
 
 
-/**
- * Get user agent's most preferred accepted language.
- *
- * @return string|null  The most preferred accepted language from the
- *                      user agent (browser). Otherwise <var>null</var>
- *                      if none defined.
- *
- * @see    _setlocale(), detect_locale(), get_locale(), set_locale()
- */
+if (!function_exists('set_locale_dir')) {
+  /**
+   * Sets the default locale directory where to find translation files.
+   *
+   * @param  string  $dir   The absolute dir where to find translation files.
+   * @return string         The directory
+   * @throws Exception - If directory does not exists or cannot be read.
+   *
+   * @see get_locale_dir()
+   */
+  function set_locale_dir($dir) {
+    return translator()->setLocaleDir($dir);
+  }
+}
+
+
+if (!function_exists('get_locale_dir')) {
+  /**
+   * Returns the default locale directory where to find translation files.
+   *
+   * @return string  Defined directory where to find the
+   *                 translations files.
+   *
+   * @see    set_locale_dir()
+   */
+  function get_locale_dir() {
+    return translator()->getLocaleDir();
+  }
+}
+
+
 if (!function_exists('get_accepted_locale')) {
+  /**
+   * Get user agent's most preferred accepted language.
+   *
+   * @return string|null  The most preferred accepted language from the
+   *                      user agent (browser). Otherwise <var>null</var>
+   *                      if none defined.
+   *
+   * @see    _setlocale(), detect_locale(), get_locale(), set_locale()
+   */
   function get_accepted_locale() {
     return translator()->getAcceptLocale();
   }
