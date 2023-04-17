@@ -1,5 +1,6 @@
 <?php
 namespace PhpGettxt;
+use Exception;
 
 
 /**
@@ -45,13 +46,13 @@ class Translator {
 
   /**
    * @var string
-   *      Default text domain
+   *      Default text domain.
    */
   const DEFAULT_DOMAIN = 'default';
 
   /**
    * @var string
-   *      Current used text-domain
+   *      Current used text-domain.
    */
   private $domain = self::DEFAULT_DOMAIN;
 
@@ -62,7 +63,7 @@ class Translator {
 
   /**
    * @var string[]
-   *      Bound directories for domains
+   *      Bound directories for domains.
    */
   private $directories = [];
 
@@ -80,8 +81,14 @@ class Translator {
   private $varname = 'locale';
 
   /**
+   * @var string
+   *      Default locale directeory where to find translation files.
+   */
+  private $locale_dir = '';
+
+  /**
    * @var Translator
-   *      Instance of this class
+   *      Instance of this class.
    */
   private static $_instance;
 
@@ -144,7 +151,7 @@ class Translator {
       $this->translations[$this->locale] = [];
     }
     if (!isset($this->translations[$this->locale][$domain])) {
-      $directory = './';
+      $directory = (!empty($this->locale_dir) ? $this->locale_dir : './');
       if (isset($this->directories[$domain])) {
         $directory = $this->directories[$domain];
       }
@@ -169,16 +176,26 @@ class Translator {
   /**
    * Set a directory for a domain
    *
-   * @param  string $domain  The unique identifier for the translation
-   * @param  string $dir     The directory where to find locales
+   * @param  string|null  $domain  The unique identifier for the translation.
+   *                               If <var>null</var> the current domain is
+   *                               used.
+   * @param  string|null  $dir     The directory where to find locales
+   *                               If <var>null</var>, the already defined
+   *                               directory for <b>$domain</b> is used.
    * @return string|false
    */
   public function bindTextdomain($domain, $dir = null) {
     $domain = $this->getDomain($domain);
+    if ($domain === self::DEFAULT_DOMAIN) {
+      if (!isset($dir) || !is_string($dir) || !is_dir($dir)) {
+        $dir = $this->locale_dir;
+      }
+    }
     if (!is_null($dir)) {
       $this->directories[$domain] = $dir;
-      $this->loadTranslation($domain);
     }
+    $this->loadTranslation($domain);
+    $this->domain = $domain;
     return isset($this->directories[$domain]) ? $this->directories[$domain] : false;
   }
 
@@ -201,6 +218,8 @@ class Translator {
    * Returns translation object for a domain
    *
    * @param  string $domain  The unique identifier for the translation
+   *                         If <var>null</var>, the Translator::DEFAULT_DOMAIN
+   *                         is used.
    * @return object
    */
   public function getTranslation($domain = null) {
@@ -235,6 +254,39 @@ class Translator {
 
 
   /**
+   * Sets the default directory where to find translation files.
+   *
+   * @param  string  $dir  The absolute path  where to find MO-files
+   * @return string        Set or current directory.
+   * @throws Exception - If directory does not exist or is not readable.
+   */
+  public function setLocaleDir($dir) {
+    if (isset($dir) && is_string($dir)) {
+      $dir = rtrim(str_replace('\\', '/', $dir), '/');
+      if ($dir !== '' && is_dir($dir)) {
+        $this->locale_dir = $dir;
+      } else {
+        throw new Exception(sprintf('Directory "%s" is not valid or cannot be read!', $dir));
+      }
+    }
+    return $this->locale_dir;
+  }
+
+
+  /**
+   * Returns the default directory where to find translation files.
+   *
+   * @return string  Current directory, otherwise empty string.
+   */
+  public function getLocaleDir() {
+    if (isset($this->locale_dir)) {
+      return $this->locale_dir;
+    }
+    return '';
+  }
+
+
+  /**
    * Defines / returns the default text-domain.
    *
    * If <b>$domain</b> is <var>null</var> the current default domain
@@ -252,7 +304,7 @@ class Translator {
 
 
   /**
-   * Defines the text domain
+   * Defines the domain
    *
    * @param  string $domain
    * @return string
@@ -270,7 +322,7 @@ class Translator {
 
 
   /**
-   * Returns current defined / used text domain
+   * Returns current defined / used domain
    *
    * @return string
    */
@@ -284,7 +336,7 @@ class Translator {
    *
    * It checks:
    *
-   * - global locale variable: `$GLOBALS['locale']'`
+   * - global locale variable: `$GLOBALS['locale']`
    * - environment for `LC_ALL`, `LC_MESSAGES` and `LANG`
    *
    * @return string  With locale name. If it could not detect
