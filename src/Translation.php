@@ -236,8 +236,8 @@ class Translation {
    * Check if a string is translated.
    *
    * @param  string  $msgid  Original string  to be checked
-   * @return bool  If exists <var>true</var>,
-   *               otherwise <var>false</var>
+   * @return bool    If exists <var>true</var>,
+   *                 otherwise <var>false</var>
    */
   public function exists($msgid) {
     return $this->entries->exists($msgid);
@@ -398,7 +398,7 @@ class Translation {
    *
    * @param  TranslationCache|string|null  $translations
    *         String for the mo-file to load, null for no file, or an
-   *         instance of Translations
+   *         instance of TranslationCache
    */
   public function __construct($translations) {
     /** @var null|TranslationCache $cached */
