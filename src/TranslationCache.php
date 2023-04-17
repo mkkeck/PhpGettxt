@@ -1,9 +1,10 @@
 <?php
 namespace PhpGettxt;
+use Exception;
 
 
 /**
- * Translations cache.
+ * Translation Cache.
  *
  * @package     PhpGettxt
  * @author      Michael Keck, github@michaelkeck.de
@@ -59,7 +60,7 @@ class TranslationCache {
    *
    * @param  string $msgid  The original message to check for its
    *                        translation
-   * @return bool           If translation exist <var>true</var>
+   * @return bool           If translation exist <var>true</var>,
    *                        otherwise <var>false</var>
    */
   public function exists($msgid) {
@@ -142,8 +143,11 @@ class TranslationCache {
   public function __construct($reader = null) {
     $this->translations = [];
     if ($reader instanceof MoParser) {
-      $reader->getContents($this);
-      $this->error = !empty($reader->error) ? $reader->error : false;
+      try {
+        $reader->getContents($this);
+      } catch (Exception $e) {
+        $this->error = !empty($reader->error) ? $reader->error : false;
+      }
     }
   }
 }
