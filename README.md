@@ -68,7 +68,11 @@ $translation = new Translation($cache);
 ### Translator API usage
 
 ```php
-// ...
+// include PhpGettxt
+require_once 'PhpGettxt/autoload.php';
+
+// use PhpGettxt
+use PhpGettxt\Translator;
 
 // Get instance
 use PhpGettxt\Translation;$translator = Translator::getInstance();
@@ -160,7 +164,6 @@ Translator::loadApi();
 Translate a string
 
 ```php
-// ...
 // Translate 'Hello World'
 echo $translation->gettxt('Hello World');
 
@@ -174,7 +177,6 @@ echo $translation->gettxt(['Hello %s', 'John']);
 Translate a string with context
 
 ```php
-// ...
 // Translate 'Hello World'
 echo $translation->pgettxt('Context', 'Hello World');
 
@@ -188,7 +190,6 @@ echo $translation->pgettxt('Context', ['Hello %s', 'John']);
 Return a string marked for translation
 
 ```php
-// ...
 // Returns 'Hello World'
 echo $translation->noop_gettxt('Hello World');
 
@@ -202,7 +203,6 @@ echo $translation->noop_gettxt(['Hello %s', 'John']);
 Translate a plural form
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo $translation->ngettxt('Found one item', 'Found %d items', 2);
 
@@ -216,7 +216,6 @@ echo $translation->ngettxt('Found one item', 'Found %d items', [2, 2]);
 Translate a plural form with context
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo $translation->npgettxt('Context', 'Found one item', 'Found %d items', 2);
 
@@ -230,7 +229,6 @@ echo $translation->npgettxt('Context', 'Found one item', 'Found %d items', [2, 2
 Return plural form marked for translation
 
 ```php
-// ...
 // Method 1: returns 'Found %d items'
 echo $translation->noop_ngettxt('Found one item', 'Found %d items', 2);
 
@@ -272,7 +270,6 @@ _bindtextdomain(Translator::DEFAULT_DOMAIN, __DIR__ . '/locales/');
 Translate a string
 
 ```php
-// ...
 // Translate 'Hello World'
 echo gettxt('Hello World');
 
@@ -286,7 +283,6 @@ echo gettxt(['Hello %s', 'John']);
 Translate a string with context
 
 ```php
-// ...
 // Translate 'Hello World'
 echo pgettxt('Context', 'Hello World');
 
@@ -300,7 +296,6 @@ echo pgettxt('Context', ['Hello %s', 'John']);
 Return a string marked for translation
 
 ```php
-// ...
 // Returns 'Hello World'
 echo noop_gettxt('Hello World');
 
@@ -314,7 +309,6 @@ echo noop_gettxt(['Hello %s', 'John']);
 Translate a plural form
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo ngettxt('Found one item', 'Found %d items', 2);
 
@@ -328,7 +322,6 @@ echo ngettxt('Found one item', 'Found %d items', [2, 2]);
 Translate a plural form with context
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo npgettxt('Context', 'Found one item', 'Found %d items', 2);
 
@@ -342,7 +335,6 @@ echo npgettxt('Context', 'Found one item', 'Found %d items', [2, 2]);
 Return plural form marked for translation
 
 ```php
-// ...
 // Method 1: returns 'Found %d items'
 echo noop_ngettxt('Found one item', 'Found %d items', 2);
 
@@ -356,7 +348,6 @@ echo noop_ngettxt('Found one item', 'Found %d items', [2, 2]);
 Other supported Gettext functions
 
 ```php
-
 // Gettext compatible function to translate a string
 // from another domain.
 echo dgettxt('domain', 'Hello');
@@ -407,7 +398,6 @@ load_textdomain(Translator::DEFAULT_DOMAIN);
 Translate a string
 
 ```php
-// ...
 // Translate 'Hello World'
 echo __('Hello World');
 
@@ -421,7 +411,6 @@ echo __(['Hello %s', 'John']);
 Translate a string from another domain
 
 ```php
-// ...
 // Translate 'Hello World'
 echo __('Hello World', 'domain');
 
@@ -435,7 +424,6 @@ echo __(['Hello %s', 'John'], 'domain');
 Translate a string with context
 
 ```php
-// ...
 // Translate 'Hello World'
 echo _x('Hello World', 'context');
 
@@ -449,7 +437,6 @@ echo _x(['Hello %s', 'John'], 'context');
 Translate a string with context from another domain
 
 ```php
-// ...
 // Translate 'Hello World'
 echo _x('Hello World', 'context', 'domain');
 
@@ -463,7 +450,6 @@ echo _x(['Hello %s', 'John'], 'context', 'domain');
 Return a string marked for translation
 
 ```php
-// ...
 // Returns 'Hello World'
 echo noop__('Hello World');
 
@@ -477,7 +463,6 @@ echo noop__(['Hello %s', 'John']);
 Return a string marked for translation from another domain
 
 ```php
-// ...
 // Returns 'Hello World'
 echo noop__('Hello World', 'domain');
 
@@ -491,7 +476,6 @@ echo noop__(['Hello %s', 'John'], 'domain');
 Translate a plural form
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo _n('Found one item', 'Found %d items', 2);
 
@@ -505,7 +489,6 @@ echo _n('Found one item', 'Found %d items', [2, 2]);
 Translate a plural form from another domain
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo _n('Found one item', 'Found %d items', 2, 'domain');
 
@@ -519,7 +502,6 @@ echo _n('Found one item', 'Found %d items', [2, 2], 'domain');
 Translate a plural form with context
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo _nx('Found one item', 'Found %d items', 2, 'context');
 
@@ -533,7 +515,6 @@ echo _nx('Found one item', 'Found %d items', [2, 2], 'context');
 Translate a plural form with context from another domain
 
 ```php
-// ...
 // Method 1: returns translation for 'Found %d items'
 echo _nx('Found one item', 'Found %d items', 2, 'context', 'domain');
 
@@ -547,7 +528,6 @@ echo _nx('Found one item', 'Found %d items', [2, 2], 'context', 'domain');
 Return plural form marked for translation
 
 ```php
-// ...
 // Method 1: returns 'Found %d items'
 echo noop_n('Found one item', 'Found %d items', 2);
 
@@ -561,7 +541,6 @@ echo noop_n('Found one item', 'Found %d items', [2, 2]);
 Return plural form marked for translation from another domain
 
 ```php
-// ...
 // Method 1: returns 'Found %d items'
 echo noop_n('Found one item', 'Found %d items', 2, 'domain');
 
