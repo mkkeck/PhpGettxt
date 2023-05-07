@@ -12,10 +12,12 @@ use Exception;
  * @license     MIT License
  *
  * ------------------------------------------------------------------------
- * This package is inspired by
- *
- * - MoTranslator (https://github.com/phpmyadmin/motranslator)
- * - WordPress l10n-functions (https://wordpress.org)
+ * This class is heavy based on
+ * - php-gettext<br>
+ *   Copyright (c) 2003, 2005, 2006, 2009 Danilo Segan, danilo@kvota.net
+ * - MoTranslator by phpMyAdmin<br>
+ *   Copyright (c) 2016 Michal Čihař, michal@cihar.com
+ * - WordPress translation functions and API
  * ------------------------------------------------------------------------
  *
  * Copyright (c) 2023 Michael Keck, github@michaelkeck.de

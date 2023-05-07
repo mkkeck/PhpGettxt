@@ -12,10 +12,10 @@ use Exception;
  * @license     MIT License
  *
  * ------------------------------------------------------------------------
- * This class is heavy based on
+ * This class is heavy inspired by:
  * - php-gettext<br>
  *   Copyright (c) 2003, 2005, 2006, 2009 Danilo Segan, danilo@kvota.net
- * - MoTranslator by phpMayAdmin<br>
+ * - MoTranslator by phpMyAdmin<br>
  *   Copyright (c) 2016 Michal Čihař, michal@cihar.com
  * - WordPress translation functions and API
  * ------------------------------------------------------------------------

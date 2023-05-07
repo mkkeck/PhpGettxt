@@ -11,9 +11,6 @@ namespace PhpGettxt;
  * @license     MIT License
  *
  * ------------------------------------------------------------------------
- * This class is heavy inspired and taken from the WordPress
- * project and its l10n-functions (https://wordpress.org)
- * ------------------------------------------------------------------------
  *
  * Copyright (c) 2023 Michael Keck, github@michaelkeck.de
  *

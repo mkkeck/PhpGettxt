@@ -13,7 +13,7 @@ use Exception;
  * @license     MIT License
  *
  * ------------------------------------------------------------------------
- * This class is heavy inspired and taken from the WordPress
+ * This class is heavy based on and taken from the WordPress
  * project and its l10n-functions (https://wordpress.org)
  * ------------------------------------------------------------------------
  *
