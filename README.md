@@ -75,7 +75,7 @@ require_once 'PhpGettxt/autoload.php';
 use PhpGettxt\Translator;
 
 // Get instance
-use PhpGettxt\Translation;$translator = Translator::getInstance();
+$translator = Translator::getInstance();
 
 // Set locale
 $locale = $translator->setLocale('de_DE');
